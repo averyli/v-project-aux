@@ -24,7 +24,8 @@
 	</div>
 
 	<input type="text"  ng-model="newName"/>
-    <button ng-click="addWidget(newName)">Add widget:</button>
+	<select ng-model="widgeturl" ng-options="opt as opt for opt in availableWidgets"></select>
+    <button ng-click="addWidget(newName, widgeturl)">Add widget:</button>
 	<button ng-click="updateGreedConfig()">Update greed config:</button>
 	
 	<p>
@@ -61,7 +62,7 @@
 								maxSizeY : '10'
 							};
 
-							function widget(name) {
+							function widget(name, url) {
 								this.x = 0;
 								this.y = 0;
 								this.size = {
@@ -69,6 +70,7 @@
 									y : 6
 								};
 								this.name = name;
+								this.url = url;
 							}
 
 							$scope.gridsterOpts = {
@@ -111,8 +113,10 @@
 							$scope.myWidgets = [
 							];
 							
-							$scope.addWidget = function(name) {
-								$scope.myWidgets.push(new widget(name));
+							$scope.availableWidgets = ["myWidget.html", "myAnotherWidget.html"];
+							
+							$scope.addWidget = function(name, widgeturl) {
+								$scope.myWidgets.push(new widget(name, widgeturl));
 							}
 						
 
@@ -125,12 +129,15 @@
 		
 		angular.module('App').directive("myWidget", function() {
 			return {
-				scope: {
-					   widget: '='
-				    },
-				templateUrl: 'myWidget.html'
+			    scope: {
+			    	widget: "="
+			    },
+				template: '<div ng-include="widget.url"></div>'
 			}
 		});
+		
+		//http://devsplanet.com/question/35983591 - templateUrl has no access to scope variables
+		
 	</script>
 </body>
 </html>
