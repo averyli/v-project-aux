@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html ng-app="App">
+<head>
+<meta charset="UTF-8">
+<title>Greed layout from ManifestWebDesign for angularJS</title>
+<link rel="stylesheet"
+	href="/webjars/angular-gridster/0.13.15/dist/angular-gridster.min.css" />
+</head>
+<body ng-controller="Controller">
+
+	<div class="page-header">
+		<h1>
+			Example of greedster powered by <a
+				href="https://github.com/ManifestWebDesign/angular-gridster"
+				class="alert-link">angular-gridster</a>
+		</h1>
+		spend time ~ 2 hours
+	</div>
+
+	<div gridster="gridsterOpts">
+		<ul>
+			<li gridster-item="customItemMap" style="background-color:#18bc9c;" ng-repeat="widget in myWidgets"><my-widget widget="widget"/></li>
+		</ul>
+	</div>
+
+	<input type="text"  ng-model="newName"/>
+    <button ng-click="addWidget(newName)">Add widget:</button>
+	<button ng-click="updateGreedConfig()">Update greed config:</button>
+	
+	<p>
+	List of widgets:<p>
+	<div ng-repeat="widget in myWidgets">{{widget.name}}</div>
+	{{greedConfig}}
+
+
+
+	<script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
+	<script src="/webjars/angularjs/1.4.7/angular.min.js"></script>
+	<script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+	<script
+		src="/webjars/javascript-detect-element-resize/0.5.3/jquery.resize.js"></script>
+	<script
+		src="/webjars/angular-gridster/0.13.15/dist/angular-gridster.min.js"></script>
+
+	<script type="text/javascript">
+
+		angular.module('App', [ 'gridster' ]).controller(
+				"Controller",
+				[
+						'$scope',
+						'gridsterConfig',
+						function($scope, gridsterConfig) {
+							$scope.customItemMap = {
+								sizeX : 'widget.size.x',
+								sizeY : 'widget.size.y',
+								row : 'widget.x',
+								col : 'widget.y',
+								minSizeX : '6',
+								minSizeY : '6',
+								maxSizeY : '10'
+							};
+
+							function widget(name) {
+								this.x = 0;
+								this.y = 0;
+								this.size = {
+									x : 6,
+									y : 6
+								};
+								this.name = name;
+							}
+
+							$scope.gridsterOpts = {
+									columns: 20, // the width of the grid, in columns
+									pushing: true, // whether to push other items out of the way on move or resize
+									floating: true, // whether to automatically float items up so they stack (you can temporarily disable if you are adding unsorted items with ng-repeat)
+									swapping: true, // whether or not to have items of the same size switch places instead of pushing down if they are the same size
+									width: 'auto', // can be an integer or 'auto'. 'auto' scales gridster to be the full width of its containing element
+									colWidth: 'auto', // can be an integer or 'auto'.  'auto' uses the pixel width of the element divided by 'columns'
+									rowHeight: 'match', // can be an integer or 'match'.  Match uses the colWidth, giving you square widgets.
+									margins: [10, 10], // the pixel distance between each widget
+									outerMargin: true, // whether margins apply to outer edges of the grid
+									sparse: false, // "true" can increase performance of dragging and resizing for big grid (e.g. 20x50)
+									isMobile: false, // stacks the grid items if true
+									mobileBreakPoint: 600, // if the screen is not wider that this, remove the grid layout and stack the items
+									mobileModeEnabled: true, // whether or not to toggle mobile mode when screen width is less than mobileBreakPoint
+									minColumns: 1, // the minimum columns the grid must have
+									minRows: 2, // the minimum height of the grid, in rows
+									maxRows: 100,
+									defaultSizeX: 2, // the default width of a gridster item, if not specifed
+									defaultSizeY: 1, // the default height of a gridster item, if not specified
+									minSizeX: 3, // minimum column width of an item
+									maxSizeX: null, // maximum column width of an item
+									minSizeY: 1, // minumum row height of an item
+									maxSizeY: null, // maximum row height of an item
+									resizable: {
+									   enabled: true,
+									   handles: ['n', 'e', 's', 'w', 'ne', 'se', 'sw', 'nw'],
+									   start: function(event, $element, widget) {}, // optional callback fired when resize is started,
+									   resize: function(event, $element, widget) {}, // optional callback fired when item is resized,
+									   stop: function(event, $element, widget) {} // optional callback fired when item is finished resizing
+									},
+									draggable: {
+									   enabled: true, // whether dragging items is supported
+									   start: function(event, $element, widget) {}, // optional callback fired when drag is started,
+									   drag: function(event, $element, widget) {}, // optional callback fired when item is moved,
+									   stop: function(event, $element, widget) {} // optional callback fired when item is finished dragging
+									}
+								};
+							$scope.myWidgets = [
+							];
+							
+							$scope.addWidget = function(name) {
+								$scope.myWidgets.push(new widget(name));
+							}
+						
+
+							$scope.greedConfig = "";
+							$scope.updateGreedConfig = function() {
+								$scope.greedConfig = JSON.stringify(
+										gridsterConfig, null, 4);
+							};
+						} ]);
+		
+		angular.module('App').directive("myWidget", function() {
+			return {
+				scope: {
+					   widget: '='
+				    },
+				templateUrl: 'myWidget.html'
+			}
+		});
+	</script>
+</body>
+</html>

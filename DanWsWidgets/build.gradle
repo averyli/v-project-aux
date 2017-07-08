@@ -1,0 +1,42 @@
+apply plugin: 'eclipse'
+apply plugin: 'java'
+
+repositories {
+   mavenCentral()
+}
+
+
+version = '1.0'
+
+dependencies {
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
+	compile("org.springframework.boot:spring-boot-starter-web:1.5.4.RELEASE")
+	compile("org.springframework:spring-messaging:4.3.9.RELEASE")
+	compile("org.springframework.boot:spring-boot-starter-websocket:1.5.4.RELEASE")
+	// https://mvnrepository.com/artifact/junit/junit
+	testCompile("junit:junit:4.12")
+	
+	compile("org.webjars:bootstrap:3.3.7")
+    compile("org.webjars:angularjs:1.4.7")
+    compile("org.webjars:jquery:3.2.1")
+    compile("org.webjars:lodash:4.17.4")
+    
+    compile("org.webjars:sockjs-client:1.0.2")
+    compile("org.webjars:stomp-websocket:2.3.3")   
+    
+    // https://mvnrepository.com/artifact/org.webjars.bower/github-com-troolee-gridstack-js
+compile group: 'org.webjars.bower', name: 'github-com-troolee-gridstack-js', version: '0.3.0'
+
+
+// https://mvnrepository.com/artifact/org.webjars.bower/angular-gridster
+compile group: 'org.webjars.bower', name: 'angular-gridster', version: '0.13.15'
+
+    
+ 
+}
+
+
+task copyDependencies(type: Copy) {
+   from configurations.compile
+   into 'build/libs/libs'
+}

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html ng-app="A">
+<head>
+<meta charset="UTF-8">
+<title>Greed layout from troolee for angularJS</title>
+<link rel="stylesheet"
+	href="//cdnjs.cloudflare.com/ajax/libs/gridstack.js/0.2.6/gridstack.min.css" />
+
+<style type="text/css">
+.grid-stack {
+	background: lightgoldenrodyellow;
+}
+
+.grid-stack-item-content {
+	color: #2c3e50;
+	text-align: center;
+	background-color: #18bc9c;
+}
+</style>
+</head>
+<body ng-controller="C">
+
+	<div class="page-header">
+		<h1>
+			Example of greedster powered by <a
+				href="https://github.com/troolee/gridstack.js" class="alert-link">greedster.js</a>
+		</h1>
+		spent ~2 hours
+	</div>
+
+	<div class="container-fluid">
+		<div class="grid-stack">
+			<div class="grid-stack-item" data-gs-x="{{x}}" data-gs-y="{{y}}"
+				data-gs-width="2" data-gs-height="2">
+				<div class="grid-stack-item-content" my-box-2></div>
+			</div>
+			<div class="grid-stack-item" data-gs-x="4" data-gs-y="4"
+				data-gs-width="4" data-gs-height="4">
+				<div class="grid-stack-item-content" my-Box></div></div>
+			</div>
+		</div>
+	</div>
+
+
+	<script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
+	<script src="/webjars/angularjs/1.4.7/angular.min.js"></script>
+	<script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+	<script src="/webjars/lodash/4.17.4/dist/lodash.min.js"></script>
+
+	<script type="text/javascript"
+		src='//cdnjs.cloudflare.com/ajax/libs/gridstack.js/0.2.6/gridstack.min.js'></script>
+
+
+
+	<script type="text/javascript">
+
+	angular.module('A',[]);
+	angular.module('A').controller("C",['$scope', function($scope) {
+		$scope.hi = "HI this is angularJS"
+		
+		$scope.x=3;
+		$scope.y=3;
+	}]);
+	
+	
+	angular.module('A').directive("myBox", function() {
+		return {
+			templateUrl: 'myBox1.html'
+		}
+	});
+	
+	angular.module('A').directive("myBox2", function() {
+		return {
+			templateUrl: 'myBox2.html'
+		}
+	});
+	
+	$(function () {
+		    $('.grid-stack').gridstack();
+		    
+		    
+	});
+	
+	</script>
+
+</body>
+</html>
