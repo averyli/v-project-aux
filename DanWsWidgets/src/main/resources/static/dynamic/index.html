@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html ng-app="App">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body ng-controller="Controller">
+<h1>{{greeting}}</h1>
+<input type="number" ng-model="number" />
+<button ng-click="detectClasses()">find widgets:</button>
+{{classes}}
+<p>
+<button ng-click="sendPingToWidget1()">sendPingToWidget</button>
+<button ng-click="sendPingToWidget2()">sendPingToWidget2</button>
+<button ng-click="sendPingToWidget3()">sendPingToWidget3</button>
+
+       <!-- common libs -->
+	    <script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
+	    <script src="/webjars/angularjs/1.4.7/angular.min.js"></script>
+	    <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+        
+        <script src="/webjars/sockjs-client/1.0.2/sockjs.min.js"></script>
+        <script src="/webjars/stomp-websocket/2.3.3/stomp.min.js"></script>
+        
+
+<script type="text/javascript">
+
+angular.module('App',[]);
+
+angular.module('App').controller('Controller', ['$scope', function($scope) {
+	
+	$scope.greeting = "Hello dynamic sockets";
+	
+	var webSocket = new SockJS('/endpoint');
+	var stompClient = Stomp.over(webSocket);
+	stompClient.connect({}, function(frame) {
+		stompClient.subscribe('/topic/activate', function(response) {
+			showClasses(response.body);
+		})
+	});
+			
+	$scope.detectClasses = function() {
+		stompClient.send("/app/widgetsController",{},null);
+	}
+	
+	$scope.sendPingToWidget1 = function() {
+		var bew1param = {
+				param1: "A",
+				param2: 5
+			}	
+		stompClient.send("/app/incoming/params/widget1",{}, JSON.stringify(bew1param));
+	}
+	
+	$scope.sendPingToWidget2 = function() {
+		stompClient.send("/app/incoming/empty/widget2",{},null);
+	}
+	
+	$scope.sendPingToWidget3 = function() {
+		var param = {
+				message: "mes",
+				something: "someth",
+				count: 600
+		}
+		stompClient.send("/app/incoming/params/widget3",{},JSON.stringify(param));
+	}
+	
+	function showClasses(classes){
+		$scope.classes = classes;
+		$scope.$apply();
+	}
+	
+}]);
+
+</script>
+</body>
+</html>

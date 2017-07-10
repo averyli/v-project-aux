@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html ng-app='App'>
+<head>
+<meta charset="UTF-8">
+<title>Gridster Widgets</title>
+<link rel="stylesheet"
+	href="/webjars/angular-gridster/0.13.15/dist/angular-gridster.min.css" />
+<style>
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* {
+    box-sizing: border-box;
+}
+</style>
+</head>
+<body ng-controller="widgetsController">
+
+    <input type="text" ng-model="newName"/>
+	<select ng-model="newWidget" ng-options="widget.directive as widget.name for widget in availableWidgetTemplates"></select>
+    <button ng-click="addWidget(newName, newWidget)" ng-disabled="!newWidget" >Add widget:</button>
+
+    <div gridster="gridsterOpts" style="background-color:red">
+		<ul>
+			<li gridster-item="customItemMap" style="background-color:#18bc9c;background-size: contain;" ng-repeat="widget in myWidgets"><div add-directive="widget.directive" widget="widget"></div></li>
+		</ul>
+	</div>
+
+<button ng-click="increaseWidgets()">increaseWidgets</button>
+    <p>
+	List of widgets:<p>
+	<div ng-repeat="widget in myWidgets">{{widget.name}}</div>
+
+
+	<!-- common libs -->
+	<script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
+	<script src="/webjars/angularjs/1.4.7/angular.min.js"></script>
+	<script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+	<!-- angular gridster special -->
+	<script
+		src="/webjars/javascript-detect-element-resize/0.5.3/jquery.resize.js"></script>
+	<script
+		src="/webjars/angular-gridster/0.13.15/dist/angular-gridster.min.js"></script>
+		
+    <!-- app -->
+    <script
+		src="widgetsController.js"></script>
+	</script>
+	
+	<!-- available widgets -->
+	<script
+		src="widgets/simpleWidget.js"></script>
+	</script>
+    <script
+		src="widgets/complexWidget.js"></script>
+	</script>
+	<script
+		src="widgets/custom/customWidget.js"></script>
+	</script>
+</body>
+</html>
