@@ -30,29 +30,47 @@ import org.springframework.web.socket.sockjs.client.SockJsClient;
 import org.springframework.web.socket.sockjs.client.Transport;
 import org.springframework.web.socket.sockjs.client.WebSocketTransport;
 
-@RunWith(SpringRunner.class)
+@RunWith(SpringRunner.class) // this is runner: we will use SpringRunner to start up the whole application with the full context
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class WidgetIntegrationTests {
 
     @LocalServerPort
     private int port;
 
+    // for emulating SockJsClient
     private SockJsClient sockJsClient;
 
+    // for emulating WebSocketStompClient, which uses SockJsClient
     private WebSocketStompClient stompClient;
 
     private final WebSocketHttpHeaders headers = new WebSocketHttpHeaders();
 
+    /*
+     * This can be auto-generated from source class using Eclipse plugin.
+     * Here we will create stub objects.
+     * */
     @Before
     public void setup() {
         List<Transport> transports = new ArrayList<>();
+
+        // wrappers for standard WebSocket protocol?!
         transports.add(new WebSocketTransport(new StandardWebSocketClient()));
+
+        // creating new SockJs client 
         this.sockJsClient = new SockJsClient(transports);
 
+        /* Building and configuring Spring’s StompClient */
+        
         this.stompClient = new WebSocketStompClient(sockJsClient);
+
+        // needed
         this.stompClient.setMessageConverter(new MappingJackson2MessageConverter());
     }
 
+    /*
+     * This can be auto-generated from source class using Eclipse plugin.
+     * 
+     * */
     @Test
     public void getTelemetry() throws Exception {
 
